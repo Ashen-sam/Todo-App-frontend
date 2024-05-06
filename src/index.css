@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+.todo__wrapper {
+ background-image: url('./assets/images/c0a3a00.redesign-illustration.svg');
+ background-size: cover;
+ background-repeat: no-repeat;
+ background-position: top;
+ opacity:0.9;
+}
