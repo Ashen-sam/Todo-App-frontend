@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import axios from 'axios';
 import { SyntheticEvent, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { RiTodoLine } from "react-icons/ri";
 import { toast } from "sonner";
 import Input from "./input";
@@ -19,7 +18,6 @@ const API_URL = 'https://localhost:44395/api/todo';
 const Home = () => {         //home component
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
-    // const [currentTodo, setCurrentTodo] = useState<null | TTodo>(null)
     const [todo, setTodo] = useState<TTodo[]>([])
     const [completed, setCompleted] = useState(false)
     const [postInputs, setPostInputs] = useState({

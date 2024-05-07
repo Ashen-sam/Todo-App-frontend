@@ -39,7 +39,6 @@ const Todos = ({ todo, deleteTodo, handleOpen }:
                     )
                 })}
             </ul>
-
         </>
     )
 }
