@@ -1,12 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import axios from 'axios';
 import { SyntheticEvent, useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { RiTodoLine } from "react-icons/ri";
 import { toast } from "sonner";
 import Input from "./input";
 import Modals from "./modals";
 import Todos from "./todos";
-import { useForm, SubmitHandler } from "react-hook-form"
 
 export type TTodo = {   //data types of the data
     id: number;
@@ -17,21 +17,14 @@ export type TTodo = {   //data types of the data
 const API_URL = 'https://localhost:44395/api/todo';
 
 const Home = () => {         //home component
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<TTodo>()
-
-    const onSubmit: SubmitHandler<TTodo> = (data) => console.log(data)
-
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     // const [currentTodo, setCurrentTodo] = useState<null | TTodo>(null)
     const [todo, setTodo] = useState<TTodo[]>([])
+    const [completed, setCompleted] = useState(false)
     const [postInputs, setPostInputs] = useState({
         title: '',
-        completed: false,
+        completed: completed,
         description: '',
     })
     const [values, setValues] = useState({
@@ -56,7 +49,7 @@ const Home = () => {         //home component
             toast.success('Todo added successfully!')
             setPostInputs({
                 title: "",
-                completed: true,
+                completed: completed,
                 description: ""
             })
             getTodo()
@@ -77,7 +70,7 @@ const Home = () => {         //home component
         }
     }
 
-    useEffect(() => {                             
+    useEffect(() => {
         getTodo()
     }, [])
 
@@ -145,12 +138,14 @@ const Home = () => {         //home component
                             value={values.title}
                             type="text"
                             name="title"
+                            required
                             onChange={editHandler}
                             className="border w-full max-sm:p-1 border-zinc-300 rounded-md p-2 outline-none"
                             placeholder="Edit Title..." />
                         <textarea
                             value={values.description}
                             name="description"
+                            required
                             onChange={editHandler}
                             className="border border-zinc-300 max-sm:p-1 rounded-md p-1 outline-none h-[200px]"
                             placeholder="Edit Description..." />

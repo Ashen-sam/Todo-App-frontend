@@ -1,9 +1,8 @@
 import { MdDelete, MdEditSquare } from "react-icons/md";
 import { TTodo } from '.';
 
-
 const Todos = ({ todo, deleteTodo, handleOpen }:
-    { todo: TTodo[], deleteTodo: (id: number) => void; handleOpen: (task: TTodo) => void }) => {
+    { todo: TTodo[], deleteTodo: (id: number) => void; handleOpen: (task: TTodo) => void; }) => {
 
     return (
         <>
@@ -11,7 +10,11 @@ const Todos = ({ todo, deleteTodo, handleOpen }:
                 {todo.map((task) => {
                     return (
                         <li key={task.id} className="flex w-full border justify-between items-center bg-[#fafafa] rounded-lg my-2 p-3 max-[350px]:flex-col">
-                            <div className="flex items-center gap-2 ">
+                            <div className="flex items-center gap-4 ">
+                                <input
+                                    type="checkbox"
+                                    checked={task.completed}
+                                />
                                 <div>
                                     <p className={`${task.completed ? 'line-through' : ''}`}> {task.title}</p>
                                     <small className="text-zinc-900">{task.description}</small>
