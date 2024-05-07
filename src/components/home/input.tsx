@@ -1,7 +1,7 @@
 import { MdOutlineAddCircle } from "react-icons/md";
 
-const Input = ({ addTodo, title, description, setPostInputs, handleChange }:
-    { addTodo: (e: any) => void; title: string; description: string; setPostInputs: (e: any) => void; handleChange: (e:any) => void }) => {
+const Input = ({ addTodo, title, description, handleChange }:
+    { addTodo: (e: any) => void; title: string; description: string; setPostInputs: (e: any) => void; handleChange: (e: any) => void }) => {
     return (
         <>
             <form

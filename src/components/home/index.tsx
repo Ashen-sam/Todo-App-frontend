@@ -6,8 +6,9 @@ import { toast } from "sonner";
 import Input from "./input";
 import Modals from "./modals";
 import Todos from "./todos";
+import { useForm, SubmitHandler } from "react-hook-form"
 
-export type TTodo = {
+export type TTodo = {   //data types of the data
     id: number;
     title: string;
     completed: boolean;
@@ -15,8 +16,24 @@ export type TTodo = {
 }
 const API_URL = 'https://localhost:44395/api/todo';
 
-const Home = () => {
+const Home = () => {         //home component
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<TTodo>()
+
+    const onSubmit: SubmitHandler<TTodo> = (data) => console.log(data)
+
     const [open, setOpen] = useState(false);
+    const handleClose = () => setOpen(false);
+    // const [currentTodo, setCurrentTodo] = useState<null | TTodo>(null)
+    const [todo, setTodo] = useState<TTodo[]>([])
+    const [postInputs, setPostInputs] = useState({
+        title: '',
+        completed: false,
+        description: '',
+    })
     const [values, setValues] = useState({
         id: 0,
         title: "",
@@ -31,16 +48,7 @@ const Home = () => {
 
         })
     }
-    const handleClose = () => setOpen(false);
-    const [currentTodo, setCurrentTodo] = useState<null | TTodo>(null)
-    const [todo, setTodo] = useState<TTodo[]>([])
-    const [postInputs, setPostInputs] = useState({
-        title: '',
-        completed: false,
-        description: '',
-    })
-
-    const addTodo = async (e: any) => {
+    const addTodo = async (e: any) => {        //addTodo function to post the data to endpoint
         e.preventDefault()
         try {
             if (!postInputs.title || !postInputs.description) return toast.error('Please Enter Title and Description')
@@ -59,7 +67,7 @@ const Home = () => {
         }
     }
 
-    const getTodo = async () => {
+    const getTodo = async () => {                      //getTodo funtion for get data from the endpoint
         try {
             const { data } = await axios.get(API_URL)
             setTodo(data)
@@ -69,29 +77,21 @@ const Home = () => {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => {                             
         getTodo()
     }, [])
 
-    const deleteTodo = (id: number) => {
-        fetch(`${API_URL}?id=${id}`, {
-            method: "DELETE"
-        })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return res.json();
-            })
-            .then(() => {
-                setTodo(todo.filter((item) => item.id !== id));
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+    const deleteTodo = async (id: number) => {                 //deleteTodo function to delete data from the endpoint
+
+        try {
+            await axios.delete(`${API_URL}?id=${id}`)
+            setTodo(todo.filter((item) => item.id !== id));
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: any) => {                    //get the target values and set it to postInputs
         const { value, name } = e.target;
         setPostInputs((prev) => ({ ...prev, [name]: value }))
     }
@@ -100,7 +100,7 @@ const Home = () => {
         setValues((prev) => ({ ...prev, [name]: value }))
     }
 
-    const editTodo = async (e: SyntheticEvent) => {
+    const editTodo = async (e: SyntheticEvent) => {                //editTodo function to edit the data in the endpoint
         e.preventDefault()
         try {
             await axios.put(`${API_URL}`, { id: values.id, title: values.title, description: values.description })
@@ -139,7 +139,7 @@ const Home = () => {
                 open={open}
             >
                 <Box className='rounded-md max-sm:max-w-[370px] max-sm:p-3   shadow-xl p-10 fixed max-w-[400px] right-1/2 top-1/3 translate-x-1/2  w-full bg-[whitesmoke]' >
-                    <form onSubmit={editTodo} className="flex flex-col gap-2 justify-center    w-full" id="modal-modal-title" variant="h6" component="h2">
+                    <form onSubmit={editTodo} className="flex flex-col gap-2 justify-center    w-full" id="modal-modal-title" >
                         <h1 className="text-2xl flex items-center gap-2 my-3 font-semibold text-zinc-700"> <RiTodoLine />Edit Your Tasks</h1>
                         <input
                             value={values.title}
