@@ -15,11 +15,11 @@ export type TTodo = {   //data types of the data
 }
 const API_URL = 'https://localhost:44395/api/todo';
 
-const Home = () => {         //home component
+const Home = () => {
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
-    const [todo, setTodo] = useState<TTodo[]>([])
-    const [completed, setCompleted] = useState(false)
+    const [todo, setTodo] = useState<TTodo[]>([]);
+    const [completed, setCompleted] = useState(false);
     const [postInputs, setPostInputs] = useState({
         title: '',
         completed: completed,
@@ -36,13 +36,12 @@ const Home = () => {         //home component
             id: task.id,
             title: task.title,
             description: task.description,
-
         })
     }
     const addTodo = async (e: any) => {        //addTodo function to post the data to endpoint
         e.preventDefault()
         try {
-            if (!postInputs.title || !postInputs.description) return toast.error('Please Enter Title and Description')
+            if (postInputs.title === "" || postInputs.description === '') return toast.error('Please Enter Title and Description')
             await axios.post(API_URL, postInputs)
             toast.success('Todo added successfully!')
             setPostInputs({
@@ -57,7 +56,6 @@ const Home = () => {         //home component
             throw new Error(error)
         }
     }
-
     const getTodo = async () => {                      //getTodo funtion for get data from the endpoint
         try {
             const { data } = await axios.get(API_URL)
@@ -73,7 +71,6 @@ const Home = () => {         //home component
     }, [])
 
     const deleteTodo = async (id: number) => {                 //deleteTodo function to delete data from the endpoint
-
         try {
             await axios.delete(`${API_URL}?id=${id}`)
             setTodo(todo.filter((item) => item.id !== id));
@@ -152,7 +149,7 @@ const Home = () => {         //home component
                     </form>
                     <Typography id="modal-modal-description" >
                         <p className="text-center text-sm">
-                            {/* 👋 Hey let's work togather and lets finish your task */}
+                            👋 Hey let's work togather and lets finish your task
                         </p>
                     </Typography>
                 </Box>
